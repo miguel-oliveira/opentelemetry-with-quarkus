@@ -20,7 +20,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - OTEL_SDK_DISABLED=false
+      - QUARKUS_OTEL_SDK_DISABLED=false
       - EXTERNAL_SERVICE_URI=http://traced-app-2:8080
       - TRACING_SERVER_URI=http://jaeger-all-in-one:4317
   traced-app-2:
@@ -32,6 +32,6 @@ services:
     ports:
       - "8081:8080"
     environment:
-      - OTEL_SDK_DISABLED=false
+      - QUARKUS_OTEL_SDK_DISABLED=false
       - EXTERNAL_SERVICE_URI=http://traced-app-1:8080
       - TRACING_SERVER_URI=http://jaeger-all-in-one:4317
