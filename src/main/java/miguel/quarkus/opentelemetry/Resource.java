@@ -1,17 +1,17 @@
 package miguel.quarkus.opentelemetry;
 
-import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-import java.util.logging.Logger;
+import lombok.extern.slf4j.Slf4j;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 
+@Slf4j
 @Path("/trace")
 public class Resource {
-
-  private static final Logger LOG = Logger.getLogger(Resource.class.getName());
 
   private final RemoteService remoteService;
 
@@ -19,21 +19,20 @@ public class Resource {
     this.remoteService = remoteService;
   }
 
-  @GET
+  @POST
   @Path("/start")
   @Produces(MediaType.TEXT_PLAIN)
-  public String start() {
-    LOG.info("Start");
-    return remoteService.end();
+  public String start(@RequestBody(required = true) final String requestBody) {
+    log.info("Start: {}", requestBody);
+    return remoteService.end(requestBody);
   }
 
-  @GET
+  @POST
   @Path("/end")
   @Produces(MediaType.TEXT_PLAIN)
-  public String end() {
-    final String end = "End";
-    LOG.info(end);
-    return end;
+  public String end(@RequestBody(required = true) final String requestBody) {
+    log.info("End: {}", requestBody);
+    return requestBody;
   }
 
 
