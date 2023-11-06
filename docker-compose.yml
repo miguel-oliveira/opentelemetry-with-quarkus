@@ -14,28 +14,20 @@ services:
   traced-app-1:
     build:
       context: ./
-      args:
-        # Application name is only available at build time,
-        # so it must be passed as an argument to the application's Dockerfile
-        - APPLICATION_NAME=App1
-    container_name: traced-app-1
     ports:
       - "8080:8080"
     environment:
       - QUARKUS_OTEL_SDK_DISABLED=false
+      - QUARKUS_OTEL_RESOURCE_ATTRIBUTES=service.name=App1
       - EXTERNAL_SERVICE_URI=http://traced-app-2:8080
       - TRACING_SERVER_URI=http://jaeger-all-in-one:4317
   traced-app-2:
     build:
       context: ./
-      args:
-        # Application name is only available at build time,
-        # so it must be passed as an argument to the application's Dockerfile
-        - APPLICATION_NAME=App2
-    container_name: traced-app-2
     ports:
       - "8081:8080"
     environment:
       - QUARKUS_OTEL_SDK_DISABLED=false
+      - QUARKUS_OTEL_RESOURCE_ATTRIBUTES=service.name=App2
       - EXTERNAL_SERVICE_URI=http://traced-app-1:8080
       - TRACING_SERVER_URI=http://jaeger-all-in-one:4317
