@@ -1,0 +1,28 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+
+processors:
+  memory_limiter:
+    check_interval: 5s
+    limit_percentage: 75
+    spike_limit_percentage: 15
+  batch:
+    send_batch_size: 1000
+    send_batch_max_size: 1200
+    timeout: 5s
+
+exporters:
+  logging:
+    loglevel: info
+  otlphttp/jaeger:
+    endpoint: http://host.docker.internal:4318
+
+service:
+  pipelines:
+    traces:
+      receivers: [ otlp ]
+      processors: [ memory_limiter, batch ]
+      exporters: [ logging, otlphttp/jaeger ]
