@@ -1,7 +1,5 @@
 FROM openjdk:17-oracle
 
-COPY . .
+COPY ./target .
 
-RUN ./mvnw clean package
-
-ENTRYPOINT ["java", "-jar", "target/quarkus-app/quarkus-run.jar"]
+ENTRYPOINT ["java", "-jar", "quarkus-app/quarkus-run.jar"]

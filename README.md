@@ -23,7 +23,13 @@ tracing information in the Jaeger UI.
 
 ### Build and run
 
-Run following command in the project's root path (Docker must be installed):
+Both Maven and Docker are required in order to build and run this project.
+
+Run the following commands in the project's root directory:
+
+````shell
+mvn package
+````
 
 ````shell
 docker-compose up
@@ -31,7 +37,8 @@ docker-compose up
 
 This will create and run the following containers:
 
-* Two quarkus applications running at http://localhost:8080 and http://localhost:8081
+* Two quarkus applications running at http://localhost:8080/swagger
+  and http://localhost:8081/swagger
   with distinct names, App1 and App2 respectively. Both applications are instrumented to send
   tracing information to an opentelemetry collector;
 * [An Opentelemetry Collector](https://opentelemetry.io/docs/collector/) which receives tracing
