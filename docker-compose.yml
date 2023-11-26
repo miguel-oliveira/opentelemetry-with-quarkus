@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:latest
+    image: otel/opentelemetry-collector-contrib:0.89.0
     ports:
       - "4317:4317"
     command: [ "--config=/etc/otel-collector-config.yml" ]
@@ -24,7 +24,7 @@ services:
       timeout: 5s
       retries: 10
   jaeger-collector:
-    image: jaegertracing/jaeger-collector:latest
+    image: jaegertracing/jaeger-collector:1.51
     depends_on:
       elasticsearch:
         condition: service_healthy
@@ -34,7 +34,7 @@ services:
       - SPAN_STORAGE_TYPE=elasticsearch
       - ES_SERVER_URLS=http://elasticsearch:9200
   jaeger-query:
-    image: jaegertracing/jaeger-query:latest
+    image: jaegertracing/jaeger-query:1.51
     depends_on:
       elasticsearch:
         condition: service_healthy
