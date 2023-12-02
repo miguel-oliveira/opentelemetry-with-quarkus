@@ -53,7 +53,9 @@ This will create and run the following containers:
 * [A Jaeger Query Service and UI](https://www.jaegertracing.io/docs/1.50/deployment/#query-service--ui)
   available
   at http://localhost:16686, which searches the tracing information in elasticsearch and presents it
-  in the Jaeger UI.
+  in the Jaeger UI;
+* [A Kibana Dashboard](https://www.elastic.co/kibana) where you can manage your elasticsearch
+  indices, run data analytics and much more. Available at http://localhost:5601.
 
 ### Perform a request and check the generated traces in Jaeger UI
 
@@ -63,6 +65,6 @@ This will create and run the following containers:
 * Check the recorded traces by accessing http://localhost:16686
 * Traces may be searched by trace id, which is available in the "trace-id" response header
 
-### Example traces
+### Example trace
 
 ![img.png](trace_example.png)

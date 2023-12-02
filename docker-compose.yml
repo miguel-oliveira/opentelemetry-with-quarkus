@@ -23,6 +23,13 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.1.0
+    ports:
+      - "5601:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
   jaeger-collector:
     image: jaegertracing/jaeger-collector:1.51
     depends_on:
