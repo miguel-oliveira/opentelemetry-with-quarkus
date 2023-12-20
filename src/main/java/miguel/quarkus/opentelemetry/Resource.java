@@ -1,5 +1,6 @@
 package miguel.quarkus.opentelemetry;
 
+import io.opentelemetry.api.trace.SpanKind;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -32,6 +33,15 @@ public class Resource {
   @Produces(MediaType.TEXT_PLAIN)
   public String end(@RequestBody(required = true) final String requestBody) {
     log.info("End: {}", requestBody);
+    return requestBody;
+  }
+
+  @POST
+  @Path("/create-custom-span")
+  @Produces(MediaType.TEXT_PLAIN)
+  @AddInvocationResultToSpan(spanName = "Custom Span", spanAttributeName = "custom_attribute", spanKind = SpanKind.INTERNAL)
+  public String customSpan(@RequestBody(required = true) final String requestBody) {
+    log.info("Adding {} to custom span", requestBody);
     return requestBody;
   }
 
