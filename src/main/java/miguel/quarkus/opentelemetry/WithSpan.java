@@ -11,11 +11,11 @@ import java.lang.annotation.Target;
 @InterceptorBinding
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-public @interface AddInvocationResultToSpan {
+public @interface WithSpan {
 
-  @Nonbinding String spanName();
+  @Nonbinding String name() default "";
 
-  @Nonbinding String spanAttributeName();
+  @Nonbinding String outputAttributeName() default "output_value";
 
-  @Nonbinding SpanKind spanKind();
+  @Nonbinding SpanKind kind() default SpanKind.INTERNAL;
 }

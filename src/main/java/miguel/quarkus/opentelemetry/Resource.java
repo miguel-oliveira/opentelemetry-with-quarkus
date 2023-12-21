@@ -1,6 +1,5 @@
 package miguel.quarkus.opentelemetry;
 
-import io.opentelemetry.api.trace.SpanKind;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -37,12 +36,15 @@ public class Resource {
   }
 
   @POST
-  @Path("/create-custom-span")
+  @Path("/generate-method-invocation-span")
   @Produces(MediaType.TEXT_PLAIN)
-  @AddInvocationResultToSpan(spanName = "Custom Span", spanAttributeName = "custom_attribute", spanKind = SpanKind.INTERNAL)
-  public String customSpan(@RequestBody(required = true) final String requestBody) {
-    log.info("Adding {} to custom span", requestBody);
-    return requestBody;
+  @WithSpan(name = "Custom Span", outputAttributeName = "return_value")
+  public String generateMethodInvocationSpan(
+      @RequestBody(required = true) final String requestBody
+  ) {
+    final String output = "Output Value";
+    log.info("Input: {}. Output: {}", requestBody, output);
+    return output;
   }
 
 
