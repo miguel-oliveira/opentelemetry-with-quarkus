@@ -1,37 +1,40 @@
-version: "3.8"
 services:
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.89.0
+    image: otel/opentelemetry-collector-contrib:0.106.1
     ports:
       - "4317:4317"
     command: [ "--config=/etc/otel-collector-config.yml" ]
     volumes:
       - ./otel-collector-config.yml:/etc/otel-collector-config.yml
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.1.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
     environment:
       - discovery.type=single-node
       - node.name=es01
       - bootstrap.memory_lock=true
+      - xpack.security.transport.ssl.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
-      - ./esdata:/usr/share/elasticsearch/data
+      - ./esdata:/var/lib/elasticsearch/data
     ports:
       - "9200:9200"
     healthcheck:
-      test: curl -s http://elasticsearch:9200 >/dev/null || exit 1
+      test: curl -s http://elasticsearch:9200/_cluster/health >/dev/null || exit 1
       interval: 5s
       timeout: 5s
       retries: 10
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.1.0
+    image: docker.elastic.co/kibana/kibana:8.15.0
     ports:
       - "5601:5601"
     depends_on:
       elasticsearch:
         condition: service_healthy
   jaeger-collector:
-    image: jaegertracing/jaeger-collector:1.51
+    image: jaegertracing/jaeger-collector:1.60
     depends_on:
       elasticsearch:
         condition: service_healthy
@@ -41,7 +44,7 @@ services:
       - SPAN_STORAGE_TYPE=elasticsearch
       - ES_SERVER_URLS=http://elasticsearch:9200
   jaeger-query:
-    image: jaegertracing/jaeger-query:1.51
+    image: jaegertracing/jaeger-query:1.60
     depends_on:
       elasticsearch:
         condition: service_healthy
